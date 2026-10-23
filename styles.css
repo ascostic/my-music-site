@@ -1,7 +1,14 @@
 
+:root {
+    --theme-bg: #101014;
+    --theme-card: #21172d;
+    --theme-accent: #b39ddb;
+    --theme-text: #e5e5e5;
+}
+
 body {
-    background-color: #020202f7;
-    color: #e5e5e5;
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
     font-family: Arial, sans-serif;
 }
 
@@ -12,14 +19,45 @@ body {
     max-width: 1100px;
     margin: 60px auto;
     padding: 20px;
+
+    animation: fadeIn 0.6s ease-out;
 }
 
+
 .site-nav a {
+    position: relative;
     color: #ffffff;
     text-decoration: none;
     font-size: 15px;
     transition: color 0.2s ease;
 }
+
+.site-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: #b39ddb;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.site-nav a:hover {
+    color: #b39ddb;
+}
+
+.site-nav a:hover::after,
+.site-nav a.active::after {
+    transform: scaleX(1);
+}
+
+.site-nav a.active {
+    color: #b39ddb;
+}
+
 
 .about-me {
     flex: 1;
@@ -37,12 +75,27 @@ body {
     margin-bottom: 20px;
 }
 
+
 .song-of-the-week {
     width: 300px;
     flex-shrink: 0;
     text-align: center;
-    background-color: #d62e2e;
+    position: relative;
+    isolation: isolate;
     padding: 30px;
+    border-radius: 16px;
+}
+
+.song-of-the-week::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("https://t2.genius.com/unsafe/344x344/https%3A%2F%2Fimages.genius.com%2F942a0c640c9241c40e91fedc7a94ceb6.1000x1000x1.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: -1;
+    border-radius: inherit;
 }
 
 .song-of-the-week img {
@@ -88,6 +141,18 @@ body {
     padding: 24px;
     background-color: #1e1e1e;
     border-radius: 10px;
+   transition: transform 0.35s ease,
+               background-color 0.35s ease,
+               box-shadow 0.35s ease;
+}
+
+.favorite-album:hover,
+.weekend-songs:hover,
+.favorite-artists:hover {
+    transform: translateY(-3px);
+    background-color: #24242a;
+    border: 1px solid #393943;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Page heading */
@@ -108,6 +173,15 @@ body:has(.favorite-album) > h1 {
     height: auto;
     border-radius: 6px;
     margin: 20px 0;
+    transition: transform 0.3s ease;
+    transform-origin: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.favorite-album img:hover {
+   transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .favorite-album h2,
@@ -120,7 +194,13 @@ body:has(.favorite-album) > h1 {
 
 .favorite-album h3 {
     margin-bottom: 8px;
+    transition: color 0.25s ease;
 }
+
+.favorite-album h3:hover {
+    color: #b39ddb;
+}
+
 
 .favorite-album p {
     color: #a1a1aa;
@@ -146,7 +226,48 @@ body:has(.favorite-album) > h1 {
 .favorite-album a {
     color: #e5e5e5;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.25s ease,
+                text-decoration-color 0.25s ease,
+                transform 0.25s ease;
+}
+
+.weekend-songs a:hover,
+.favorite-artists a:hover,
+.weekend-songs a:focus-visible,
+.favorite-artists a:focus-visible {
+    transform: translateX(4px);
+    color: #b39ddb;
+}
+
+.weekend-songs a::after,
+.favorite-artists a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background-color: #b39ddb;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.weekend-songs a:hover::after,
+.favorite-artists a:hover::after,
+.weekend-songs a:focus-visible::after,
+.favorite-artists a:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.favorite-artists a {
+    display: inline-block;
+    transition: color 0.25s ease,
+                transform 0.25s ease;
+}
+
+.favorite-artists a:hover {
+    transform: translateX(4px);
 }
 
 .weekend-songs a:hover,
@@ -154,8 +275,13 @@ body:has(.favorite-album) > h1 {
 .favorite-album a:hover {
     color: #b39ddb;
     text-decoration: underline;
+    transition: color 0.25s ease, text-decoration-color 0.25s ease;
 }
 
+.weekend-songs a:hover {
+    transform: translateX(4px);
+    display: inline-block;
+}
 /* Mobile layout */
 
 @media (max-width: 600px) {
@@ -174,4 +300,95 @@ body:has(.favorite-album) > h1 {
     .favorite-album img {
         width: 180px;
     }
+}
+
+/* Page-load fade-in */
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Fade-in for the LMMS page */
+.music-project {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Fade-in for the Favorites page */
+.favorite-album {
+    animation: fadeIn 0.6s ease-out;
+    animation-fill-mode: backwards;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease,
+            background-color 0.25s ease,
+            box-shadow 0.25s ease;
+}
+
+.weekend-songs {
+    animation: fadeIn 0.6s ease-out;
+    animation-delay: 0.2s;
+    animation-fill-mode: backwards;
+    
+}
+
+.favorite-artists {
+    animation: fadeIn 0.6s ease-out;
+    animation-delay: 0.4s;
+    animation-fill-mode: backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+.weekend-songs a {
+    display: inline-block;
+    position: relative;
+}
+
+.weekend-songs a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background-color: #b39ddb;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.weekend-songs a:hover::after {
+    transform: scaleX(1);
+}
+
+@media (max-width: 600px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .site-nav {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
 }
